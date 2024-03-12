@@ -3,6 +3,7 @@
 #include "./remuxing.h"
 #include "./cutvideo.h"
 #include "./media2yuv.h"
+#include "./videoresolutionchange.h"
 using namespace std;
 
 int main()
@@ -52,10 +53,21 @@ int main()
 //    ret = p.cutVideo();
 
 //     将媒体视频的YUV数据提取。
-    char * infile = "E:/QT_Workspace/FFmpeg/media/ande_10s.mp4";
-    char * outfile = "E:/QT_Workspace/FFmpeg/media/ande_10s_media2YUV.yuv";
-    Media2YUV m(infile,outfile);
-    ret = m.media2yuv();
+//    char * infile = "E:/QT_Workspace/FFmpeg/media/ande_10s.mp4";
+//    char * outfile = "E:/QT_Workspace/FFmpeg/media/ande_10s_media2YUV.yuv";
+//    Media2YUV m(infile,outfile);
+//    ret = m.media2yuv();
+
+    char * infile = "E:/QT_Workspace/FFmpeg/media/ande_10s.mp4";  //1280x720
+//    char * outfile = "E:/QT_Workspace/FFmpeg/media/ande_10s_640*480.yuv";
+    char * outfile = "E:/QT_Workspace/FFmpeg/media/ande_10s_640_480.yuv";
+
+    char * resolution = "640*480";
+    VideoResolutionChange p(infile,outfile,resolution);
+
+    ret = p.videoResolutionChange();
+
+
 
     cout<<"end: "<<ret<<endl;
     return 0;
