@@ -24,6 +24,7 @@ private:
     int init();
     int decode(AVCodecContext *codeCtx,AVPacket *pkt,AVFrame *dstFrame,struct SwsContext *c);
 private:
+    int width,height;
     char * inFilePath;
     char * outFilePath;
     AVFormatContext * fmtCtx;

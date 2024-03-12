@@ -4,6 +4,7 @@
 #include "./cutvideo.h"
 #include "./media2yuv.h"
 #include "./videoresolutionchange.h"
+#include "./videocolorspacechange.h"
 using namespace std;
 
 int main()
@@ -58,16 +59,22 @@ int main()
 //    Media2YUV m(infile,outfile);
 //    ret = m.media2yuv();
 
-    char * infile = "E:/QT_Workspace/FFmpeg/media/ande_10s.mp4";  //1280x720
-//    char * outfile = "E:/QT_Workspace/FFmpeg/media/ande_10s_640*480.yuv";
-    char * outfile = "E:/QT_Workspace/FFmpeg/media/ande_10s_640_480.yuv";
+        //修改视频分辨率
+//    char * infile = "E:/QT_Workspace/FFmpeg/media/ande_10s.mp4";  //1280x720
+////    char * outfile = "E:/QT_Workspace/FFmpeg/media/ande_10s_640*480.yuv";     //不能用  * fopen打不开
+//    char * outfile = "E:/QT_Workspace/FFmpeg/media/ande_10s_640_480.yuv";
 
+//    char * resolution = "640*480";
+//    VideoResolutionChange p(infile,outfile,resolution);
+//    ret = p.videoResolutionChange();
+
+
+     //修改视频颜色空间
     char * resolution = "640*480";
-    VideoResolutionChange p(infile,outfile,resolution);
-
-    ret = p.videoResolutionChange();
-
-
+    char * infile = "E:/QT_Workspace/FFmpeg/media/ande_10s.mp4";  //1280x720
+    char * outfile = "E:/QT_Workspace/FFmpeg/media/ande_10s_640_480.rgb";
+    VideoColorSpaceChange p(infile,outfile,resolution);
+    ret = p.videoColorSpaceChange();
 
     cout<<"end: "<<ret<<endl;
     return 0;

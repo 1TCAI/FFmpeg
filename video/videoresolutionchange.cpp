@@ -32,7 +32,7 @@ VideoResolutionChange::~VideoResolutionChange()         //感觉一些释放不�
     avformat_close_input(&fmtCtx);
     cout<<"~VideoResolutionChange()"<<endl;
 }
-int width,height;
+
 
 int VideoResolutionChange::videoResolutionChange()
 {
@@ -132,7 +132,7 @@ int VideoResolutionChange::videoResolutionChange()
     {
         if(pkt->stream_index != video_index)
         {
-            av_packet_unref(pkt);
+//            av_packet_unref(pkt);
             continue;
         }
         ret = decode(CodeCtx,pkt,dstFrame,swsCtx);
@@ -168,7 +168,7 @@ int VideoResolutionChange::decode(AVCodecContext *codeCtx,AVPacket *pkt,AVFrame 
             return -1;
 //        fwrite(dstFrame->data[0],1,dstFrame->linesize[0]*dstFrame->height,fp);
 //        fwrite(dstFrame->data[1],1,dstFrame->linesize[0]*dstFrame->height/4,fp);
-//        fwrite(dstFrame->data[2],1,dstFrame->linesize[0]*dstFrame->height/4,fp);      !!!!!!!!
+//        fwrite(dstFrame->data[2],1,dstFrame->linesize[0]*dstFrame->height/4,fp);
         fwrite(dstFrame->data[0],1,width*height,fp);
         fwrite(dstFrame->data[1],1,width*height/4,fp);
         fwrite(dstFrame->data[2],1,width*height/4,fp);
@@ -176,3 +176,6 @@ int VideoResolutionChange::decode(AVCodecContext *codeCtx,AVPacket *pkt,AVFrame 
     return 0;
 }
 
+//int sws_scale(struct SwsContext *c, const uint8_t *const srcSlice[],
+//              const int srcStride[], int srcSliceY, int srcSliceH,
+//              uint8_t *const dst[], const int dstStride[]);
