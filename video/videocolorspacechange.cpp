@@ -1,5 +1,14 @@
 #include "videocolorspacechange.h"
 
+
+
+
+
+
+
+
+
+
 VideoColorSpaceChange::VideoColorSpaceChange(char * inFile,char * outFile, char *resolut)
     :inFilePath(inFile),outFilePath(outFile),resolution(resolut)
 {

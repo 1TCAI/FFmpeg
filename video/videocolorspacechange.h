@@ -14,6 +14,41 @@ extern "C"
 }
 using namespace std;
 //颜色空间转换并报错rgb图像数据
+
+//#define WORD uint16_t;
+//#define DWORD uint32_t
+//#define LONG int32_t
+
+
+
+//#pragma pack(2)     //预设两个字节对齐
+//typedef  struct tabBITMAPFILEHEADER
+//{
+//    WORD bfType;        //固定0x4d42  BM
+//    DWORD bfSize;       //整个bmp文件大小
+//    WORD bfreserved1;   //保留字1
+//    WORD bfreserved2;
+//    DWORD bfOffBits;    //图片位置与bmp文件偏移量 也就是三个部分长度和
+
+//}BITMAPFILEHEADER;
+
+//typedef  struct tagBITMAPINFOHEADER
+//{
+//    DWORD biSize;            //表示struct tagBITMAPINFOHEADER结构体的长度，设为40
+//    LONG biWidth;           //bmp图片宽度
+//    LONG biHeight;          //bmp图片高度
+//    WORD biPlanes;          //bmp图片平面数，设为1
+//    WORD biBitCount;        //bmp图片的颜色位数，即1位图(单色或二值图像)    8位图、16位 24 32
+//    DWORD biCompression;        //图片的压缩属性，bmp图片是不压缩的，设不压缩
+//    DWORD bisizeInage;          //实际位图数据占用的字节数，着biConpres可省略
+//    LONG biXPelsPerMeter;       //X方向分辨率，可省略
+//    LONG biYPelsPerMeter;       //Y方向分辨率，可省略
+//    DWORD biClrUsed;            ///使用了多少个颜色索引表，如果为6i示默认值(2^b
+//    DWORD biClrImportant;       //重要颜色数，如果为0，则表示所有颜负
+//}BITMAPINFOHEADER;
+
+
+
 class VideoColorSpaceChange
 {
 public:

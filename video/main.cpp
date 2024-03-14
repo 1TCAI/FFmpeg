@@ -5,6 +5,7 @@
 #include "./media2yuv.h"
 #include "./videoresolutionchange.h"
 #include "./videocolorspacechange.h"
+#include "./yuv2h264.h"
 using namespace std;
 
 int main()
@@ -69,12 +70,24 @@ int main()
 //    ret = p.videoResolutionChange();
 
 
-     //修改视频颜色空间
-    char * resolution = "640*480";
-    char * infile = "E:/QT_Workspace/FFmpeg/media/ande_10s.mp4";  //1280x720
-    char * outfile = "E:/QT_Workspace/FFmpeg/media/ande_10s_640_480.rgb";
-    VideoColorSpaceChange p(infile,outfile,resolution);
-    ret = p.videoColorSpaceChange();
+//     //修改视频颜色空间
+//    char * resolution = "640*480";
+//    char * infile = "E:/QT_Workspace/FFmpeg/media/ande_10s.mp4";  //1280x720
+//    char * outfile = "E:/QT_Workspace/FFmpeg/media/ande_10s_640_480.rgb";
+//    VideoColorSpaceChange p(infile,outfile,resolution);
+//    ret = p.videoColorSpaceChange();
+
+
+    //
+    char * resolution = "1280x720";
+    char * infile = "E:/QT_Workspace/FFmpeg/media/ande_10s_media2YUV.yuv";  //1280x720
+    char * outfile = "E:/QT_Workspace/FFmpeg/media/ande_10s.h264";
+    char * encoderName = "libx264";
+    AVPixelFormat pixFmt = AV_PIX_FMT_YUV420P;
+    int fps = 25;
+    YUV2h264 p(infile,outfile,resolution,encoderName,pixFmt,fps);
+    ret = p.yuv2h264();
+
 
     cout<<"end: "<<ret<<endl;
     return 0;
