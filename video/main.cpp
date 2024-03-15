@@ -6,6 +6,7 @@
 #include "./videoresolutionchange.h"
 #include "./videocolorspacechange.h"
 #include "./yuv2h264.h"
+#include "./mediacapture.h"
 using namespace std;
 
 int main()
@@ -78,17 +79,23 @@ int main()
 //    ret = p.videoColorSpaceChange();
 
 
-    //
-    char * resolution = "1280x720";
-    char * infile = "E:/QT_Workspace/FFmpeg/media/ande_10s_media2YUV.yuv";  //1280x720
-    char * outfile = "E:/QT_Workspace/FFmpeg/media/ande_10s.h264";
-    char * encoderName = "libx264";
+    //yuv数据编码为h264
+//    char * resolution = "1280x720";
+//    char * infile = "E:/QT_Workspace/FFmpeg/media/ande_10s_media2YUV.yuv";  //1280x720
+//    char * outfile = "E:/QT_Workspace/FFmpeg/media/ande_10s.h264";
+//    char * encoderName = "libx264";
+//    AVPixelFormat pixFmt = AV_PIX_FMT_YUV420P;
+//    int fps = 25;
+//    YUV2h264 p(infile,outfile,resolution,encoderName,pixFmt,fps);
+//    ret = p.yuv2h264();
+
+
+    char * resolution = "720*640";
     AVPixelFormat pixFmt = AV_PIX_FMT_YUV420P;
-    int fps = 25;
-    YUV2h264 p(infile,outfile,resolution,encoderName,pixFmt,fps);
-    ret = p.yuv2h264();
-
-
-    cout<<"end: "<<ret<<endl;
+    char * outfile = "E:/QT_Workspace/FFmpeg/media/out.yuv";
+    MediaCapture p(outfile,resolution,pixFmt);
+    ret = p.Capture();
+    //ffplay.exe -pix_fmt yuyv422 -s 1280*720 .\out.yuv
+    cout<<"ret: "<<ret<<endl;
     return 0;
 }

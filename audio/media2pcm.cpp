@@ -46,6 +46,7 @@ int Media2pcm::media2pcm()
     if(!fp)
     {
         cout<<"fopen error"<<endl;
+        ret = -1;
         goto end;
     }
     cout<<"fopen success"<<endl;

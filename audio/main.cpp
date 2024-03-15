@@ -9,7 +9,7 @@
 #include "./media2aac.h"
 #include "./media2pcm.h"
 #include "./pcm2aac.h"
-
+#include "./mediacapture.h"
 using namespace std;
 
 int main()
@@ -58,10 +58,15 @@ int main()
 
 
     //pcm2aac
-    char * infile = "E:/QT_Workspace/FFmpeg/media/guang10_s16le_wave2pcm.pcm";
-    char * outfile = "E:/QT_Workspace/FFmpeg/media/guang10_pcm2aac.aac";
-    Pcm2Aac p(infile,outfile);
-    ret = p.pcm2aac();
+//    char * infile = "E:/QT_Workspace/FFmpeg/media/guang10_s16le_wave2pcm.pcm";
+//    char * outfile = "E:/QT_Workspace/FFmpeg/media/guang10_pcm2aac.aac";
+//    Pcm2Aac p(infile,outfile);
+//    ret = p.pcm2aac();
+
+    // Audio: mp3 (libmp3lame), 44100 Hz, stereo, s16p
+    char * outfile = "E:/QT_Workspace/FFmpeg/media/capture.pcm";
+    MediaCapture p(outfile);
+    ret = p.Capture();
     cout<<"ret: "<<ret<<endl;
     cout<<"end"<<endl;
     return 0;

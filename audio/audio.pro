@@ -5,6 +5,7 @@ CONFIG -= qt
 
 SOURCES += main.cpp \
     media2pcm.cpp \
+    mediacapture.cpp \
     pcm2aac.cpp \
     pcm2wav.cpp \
     wav2pcm.cpp \
@@ -16,6 +17,7 @@ SOURCES += main.cpp \
 
 HEADERS += \
     media2pcm.h \
+    mediacapture.h \
     pcm2aac.h \
     pcm2wav.h \
     wav2pcm.h \

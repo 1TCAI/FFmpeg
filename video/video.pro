@@ -7,6 +7,7 @@ SOURCES += main.cpp \
     cutvideo.cpp \
     media2h264.cpp \
     media2yuv.cpp \
+    mediacapture.cpp \
     remuxing.cpp \
     videocolorspacechange.cpp \
     videoresolutionchange.cpp \
@@ -30,6 +31,7 @@ HEADERS += \
     cutvideo.h \
     media2h264.h \
     media2yuv.h \
+    mediacapture.h \
     remuxing.h \
     videocolorspacechange.h \
     videoresolutionchange.h \
