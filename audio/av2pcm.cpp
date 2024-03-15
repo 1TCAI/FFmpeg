@@ -7,17 +7,16 @@ Av2Pcm::Av2Pcm(char *inFile,char *outFile): inFilePath(inFile),outFilePath(outFi
 
 int Av2Pcm::open_codec()
 {
-    fmtCtx= avformat_alloc_context();//奇怪为什么这里需要先分配内存？？
+    fmtCtx= avformat_alloc_context();
 
     int ret = -1;
-    int audio_index = -1;
     AVCodec *codec;
 
     ret = avformat_open_input(&fmtCtx,inFilePath, nullptr,nullptr);
     if(ret < 0)
     {
         cout<<"avformat_open_input error"<<endl;
-        return -1;
+        return ret;
     }
     cout<<"avformat_open_input success"<<endl;
 
@@ -25,14 +24,14 @@ int Av2Pcm::open_codec()
     if(ret < 0)
     {
         cout<<"avformat_find_stream_info error"<<endl;
-        return -1;
+        return ret;
     }
     cout<<"avformat_find_stream_info success"<<endl;
     ret = av_find_best_stream(fmtCtx,AVMEDIA_TYPE_AUDIO,-1,-1,nullptr,0);
     if(ret < 0)
     {
         cout<<"av_find_best_stream error"<<endl;
-        return -1;
+        return ret;
     }
     cout<<"av_find_best_stream success"<<endl;
     audio_index = ret;
@@ -83,15 +82,12 @@ int Av2Pcm::decode(AVPacket *pkt,AVFrame * frame,FILE *fp)
 {
     int ret = -1;
     ret = avcodec_send_packet(codecCtx,pkt);
-    if(ret <0) return ret;
+    if(ret <0)
+        return ret;
 
-//        ret = avcodec_receive_frame(codecCtx,frame);
-//        if(ret <0) break;     应该放在while循环里 不一定一次能receive完
-    while(ret  >=0)
+    while(avcodec_receive_frame(codecCtx,frame) == 0)
     {
-        ret = avcodec_receive_frame(codecCtx,frame);
-        if(ret < 0)
-            break;
+
         size_t linesize = frame->nb_samples * av_get_bytes_per_sample(codecCtx->sample_fmt);
 
 //            cout<<frame->nb_samples<<"   "<<av_get_bits_per_sample(
@@ -100,7 +96,7 @@ int Av2Pcm::decode(AVPacket *pkt,AVFrame * frame,FILE *fp)
         fwrite(frame->extended_data[0],1,linesize,fp);
         av_frame_unref(frame);
     }
-
+    return 0;
 }
 
 int Av2Pcm::av2pcm()
@@ -115,9 +111,7 @@ int Av2Pcm::av2pcm()
 
     AVPacket *pkt;
     pkt = av_packet_alloc();
-    av_init_packet(pkt);
-    pkt->data = NULL;
-    pkt->size = 0;
+
     AVFrame *frame;
     frame = av_frame_alloc();
     FILE *fp;
@@ -129,20 +123,20 @@ int Av2Pcm::av2pcm()
     }
     cout<<"fopen success"<<endl;
 
-    cout<<codecCtx->channels<<endl;
-    cout<<codecCtx->sample_rate<<endl;
-    cout<<codecCtx->sample_fmt<<endl;
-    while ( av_read_frame(fmtCtx,pkt) >=0)
+
+    while (av_read_frame(fmtCtx,pkt) ==0)
     {
         //！！！！！！！！没有对pkt的索引进行判断
-        if(pkt->stream_index != audio_stream->index)
-            continue;
-        ret = decode(pkt,frame,fp);
+        if(pkt->stream_index == audio_stream->index)
+        {
+            ret = decode(pkt,frame,fp);
+
+        }
         //这里调试ret = -11  receive失败肯定是负数，不能在下面进行break。
         av_packet_unref(pkt);
         //!!!!!每次循环完没有释放pkt
-//        if (ret < 0)
-//        break;
+        if (ret < 0)
+        break;
     }
     decode(NULL,frame,fp);
 
@@ -151,6 +145,9 @@ end:
     avformat_close_input(&fmtCtx);
     avcodec_free_context(&codecCtx);
     av_frame_free(&frame);
+    if(ret < 0)
+        return ret;
+    return 0;
 }
 
 

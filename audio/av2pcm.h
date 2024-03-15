@@ -23,6 +23,7 @@ private:
     char * outFilePath;
     AVFormatContext *fmtCtx;
     AVCodecContext *codecCtx;
+    int audio_index;
     AVStream * audio_stream;
 };
 
