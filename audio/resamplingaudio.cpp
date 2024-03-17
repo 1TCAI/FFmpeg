@@ -34,10 +34,11 @@ int ResamplingAudio::init()
 int ResamplingAudio::encode(AVCodecContext * decoderCtx,AVPacket*pkt,AVFrame *frame,AVFrame *dstFrame,SwrContext *swrCtx)
 {
 
-    int ret = -1,dst_nb_samples,writeSize;
+    int ret = -1,dst_nb_samples,writeSize,dst_fmt_size,convert_samples;
     ret = avcodec_send_packet(decoderCtx,pkt);
     if(ret < 0)
         return -1;
+
     while (avcodec_receive_frame(decoderCtx,frame) == 0)
     {
         dst_nb_samples = av_rescale_rnd(swr_get_delay(swrCtx,audio_stream->codec->sample_rate)+frame->nb_samples,
@@ -49,9 +50,26 @@ int ResamplingAudio::encode(AVCodecContext * decoderCtx,AVPacket*pkt,AVFrame *fr
         ret = swr_convert(swrCtx,(uint8_t **)dstFrame->data,dst_nb_samples,(const uint8_t **)frame->data,frame->nb_samples);
         if(ret < 0)
             return ret;
-        writeSize = av_samples_get_buffer_size(dstFrame->linesize, av_get_channel_layout_nb_channels(channelLayout),
-                                                 ret, samFmt, 1);
-        fwrite(dstFrame->data[0],1,writeSize,fp);
+        convert_samples = ret;
+        if(av_sample_fmt_is_planar(samFmt))
+        {
+            dst_fmt_size = av_get_bytes_per_sample(samFmt) ;
+            for (int i = 0;i < convert_samples; i++)
+            {
+                for (int k = 0;k < av_get_channel_layout_nb_channels(channelLayout); k++)
+                {
+                    fwrite(dstFrame->data[k] + dst_fmt_size * i , 1 , dst_fmt_size,fp);
+                }
+            }
+
+        }else
+        {
+
+            writeSize = av_samples_get_buffer_size(dstFrame->linesize, av_get_channel_layout_nb_channels(channelLayout),
+                                                     ret, samFmt, 1);
+            fwrite(dstFrame->data[0],1,writeSize,fp);
+        }
+
     }
     return 0;
 }
@@ -120,9 +138,6 @@ int ResamplingAudio::resampling()
         goto end;
     }
     cout<<"avcodec_open2 success"<<endl;
-
-
-
 
 
     swrCtx = swr_alloc();
@@ -204,6 +219,8 @@ end:
     av_frame_free(&dstFrame);
     av_packet_free(&pkt);
     swr_free(&swrCtx);
+    avcodec_close(decoderCtx);
+    avcodec_free_context(&decoderCtx);
     if(fp)
         fclose(fp);
     avformat_close_input(&fmtCtx);

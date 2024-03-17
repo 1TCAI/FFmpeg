@@ -104,13 +104,13 @@ int main()
     //重采样，将输入的aac（44100 双声道 fltp） 重采样（48000 双声道 s32le）
     //输入的 44100 Hz, stereo, fltp,
     char * infile = "E:/QT_Workspace/FFmpeg/media/guang10s.aac";
-    char * outfile = "E:/QT_Workspace/FFmpeg/media/guang10_48000_2_s32.pcm";
+    char * outfile = "E:/QT_Workspace/FFmpeg/media/guang10s_48000_2_s32.pcm";
     uint64_t channelLayout = AV_CH_LAYOUT_STEREO;
     int samRate = 48000;
-    enum AVSampleFormat samFmt = AV_SAMPLE_FMT_S32;
+    enum AVSampleFormat samFmt = AV_SAMPLE_FMT_S32P;
     ResamplingAudio p(infile,outfile,channelLayout,samRate,samFmt);
     ret = p.resampling();
-//ffplay.exe -ar 48000 -ac 2 -f s32le -i .\guang10_48000_2_s32.pcm
+//ffplay.exe -ar 48000 -ac 2 -f s32le -i .\guang10s_48000_2_s32.pcm
 
 
 //----------------------------------------------------------------------------------//
