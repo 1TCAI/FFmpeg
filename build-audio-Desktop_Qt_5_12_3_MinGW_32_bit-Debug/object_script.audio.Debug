@@ -1,0 +1,10 @@
+debug/main.o
+debug/media2pcm.o
+debug/mediacapture.o
+debug/pcm2aac.o
+debug/pcm2wav.o
+debug/resamplingaudio.o
+debug/wav2pcm.o
+debug/av2pcm.o
+debug/media2aac.o
+debug/test.o

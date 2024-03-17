@@ -8,6 +8,7 @@ SOURCES += main.cpp \
     mediacapture.cpp \
     pcm2aac.cpp \
     pcm2wav.cpp \
+    resamplingaudio.cpp \
     wav2pcm.cpp \
     av2pcm.cpp \
     media2aac.cpp \
@@ -20,6 +21,7 @@ HEADERS += \
     mediacapture.h \
     pcm2aac.h \
     pcm2wav.h \
+    resamplingaudio.h \
     wav2pcm.h \
     av2pcm.h \
     media2aac.h \

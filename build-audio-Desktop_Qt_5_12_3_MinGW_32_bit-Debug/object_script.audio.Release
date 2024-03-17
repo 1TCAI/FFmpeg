@@ -1,0 +1,10 @@
+release/main.o
+release/media2pcm.o
+release/mediacapture.o
+release/pcm2aac.o
+release/pcm2wav.o
+release/resamplingaudio.o
+release/wav2pcm.o
+release/av2pcm.o
+release/media2aac.o
+release/test.o

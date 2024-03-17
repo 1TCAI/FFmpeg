@@ -10,7 +10,10 @@
 #include "./media2pcm.h"
 #include "./pcm2aac.h"
 #include "./mediacapture.h"
+#include "./resamplingaudio.h"
 using namespace std;
+
+
 
 int main()
 {
@@ -18,7 +21,7 @@ int main()
 //    Test t(infile);
         int ret = -1;
 
-
+//----------------------------------------------------------------------------------//
 
 //    pcm数据转wav数据
 //    char * infile = ":/../../media/guang10.pcm";        //qt中相对路径必须先加:/   !!!!!
@@ -26,12 +29,22 @@ int main()
 //    PCM2WAV p(infile,outfile,2,44100,16,16);
 //    p.Pcm2Wav();
 
+
+//----------------------------------------------------------------------------------//
+
+
 //    wav数据转pcm数据
 //    char * infile = ":/../../media/guang10_s16le.wav";
 //    char * outfile = ":/../../media/guang10_s16le_wave2pcm.pcm";
 //    WAVEFORMATEX wf;
 //    Wav2Pcm p(infile,outfile,&wf);
 //    p.wav2pcm();
+
+
+
+
+//----------------------------------------------------------------------------------//
+
 
 //    aac数据转pcm
 //    char * inFilePath = "E:/QT_Workspace/FFmpeg/media/guang10s.aac";
@@ -42,12 +55,20 @@ int main()
     // ffplay.exe -f s32le -ar 44100 -ac 1 .\guang10s_aac2pcm.pcm
 
 
+//----------------------------------------------------------------------------------//
+
+
 //    媒体文件提取aac数据
     //必须写adts头数据
 //    char * infile = "E:/QT_Workspace/FFmpeg/media/ande_10s.mp4";
 //    char * outfile = "E:/QT_Workspace/FFmpeg/media/ande_10s_media2aac.aac";
 //    Media2AAC p(infile,outfile);
 //    int ret = p.media2aac();
+
+
+
+//----------------------------------------------------------------------------------//
+
 
     //media2pcm
         //注意frame后手动设置了frame的nbsamples 否则计算buffer大小里nbsamples为0报错。
@@ -57,17 +78,44 @@ int main()
 //    ret = p.media2pcm();
 
 
+
+//----------------------------------------------------------------------------------//
+
+
+
     //pcm2aac
 //    char * infile = "E:/QT_Workspace/FFmpeg/media/guang10_s16le_wave2pcm.pcm";
 //    char * outfile = "E:/QT_Workspace/FFmpeg/media/guang10_pcm2aac.aac";
 //    Pcm2Aac p(infile,outfile);
 //    ret = p.pcm2aac();
 
-    // Audio: mp3 (libmp3lame), 44100 Hz, stereo, s16p
-    // ffplay.exe -ar 44100 -ac 2 -f s16le .\capture.pcm
-    char * outfile = "E:/QT_Workspace/FFmpeg/media/capture.pcm";
-    MediaCapture p(outfile);
-    ret = p.Capture();
+
+//----------------------------------------------------------------------------------//
+
+    // 采集麦克风数据。
+//    // ffplay.exe -ar 44100 -ac 2 -f s16le .\capture.pcm
+//    char * outfile = "E:/QT_Workspace/FFmpeg/media/capture.pcm";
+//    MediaCapture p(outfile);
+//    ret = p.Capture();
+
+
+//----------------------------------------------------------------------------------//
+
+    //重采样，将输入的aac（44100 双声道 fltp） 重采样（48000 双声道 s32le）
+    //输入的 44100 Hz, stereo, fltp,
+    char * infile = "E:/QT_Workspace/FFmpeg/media/guang10s.aac";
+    char * outfile = "E:/QT_Workspace/FFmpeg/media/guang10_48000_2_s32.pcm";
+    uint64_t channelLayout = AV_CH_LAYOUT_STEREO;
+    int samRate = 48000;
+    enum AVSampleFormat samFmt = AV_SAMPLE_FMT_S32;
+    ResamplingAudio p(infile,outfile,channelLayout,samRate,samFmt);
+    ret = p.resampling();
+//ffplay.exe -ar 48000 -ac 2 -f s32le -i .\guang10_48000_2_s32.pcm
+
+
+//----------------------------------------------------------------------------------//
+
+
     cout<<"ret: "<<ret<<endl;
     cout<<"end"<<endl;
     return 0;

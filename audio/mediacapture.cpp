@@ -199,5 +199,6 @@ end:
     avcodec_free_context(&decodeCtx);
     avcodec_close(decodeCtx);
     avformat_close_input(&fmtCtx);
+
     return ret;
 }

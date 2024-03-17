@@ -10,7 +10,7 @@ extern "C"
     #include <libavutil/log.h>
     #include <libswscale/swscale.h>
     #include <libavutil/parseutils.h>
-    #include<libavutil/imgutils.h>
+    #include <libavutil/imgutils.h>
 }
 using namespace std;
 //颜色空间转换并报错rgb图像数据
