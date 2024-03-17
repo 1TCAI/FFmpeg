@@ -64,6 +64,7 @@ int main()
 //    ret = p.pcm2aac();
 
     // Audio: mp3 (libmp3lame), 44100 Hz, stereo, s16p
+    // ffplay.exe -ar 44100 -ac 2 -f s16le .\capture.pcm
     char * outfile = "E:/QT_Workspace/FFmpeg/media/capture.pcm";
     MediaCapture p(outfile);
     ret = p.Capture();
